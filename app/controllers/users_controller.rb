@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
+   
  
   def index
   @users = user_scope.paginate(page: params[:page], per_page: 10)
 end 
-private
+
 
 def user_scope
   current_user ? User.where.not(id: current_user.id) : User.all
@@ -43,6 +44,20 @@ end
       render 'edit'
     end
   end
+  def following
+    @title = "Following"
+    @user  = User.find(params[:id])
+    @users = @user.following.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user  = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
 
   private
 
